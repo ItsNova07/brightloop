@@ -1,3 +1,4 @@
+
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext.jsx";
 import { RequireRole } from "./auth/RequireRole.jsx";
@@ -15,13 +16,17 @@ import { Staff } from "./pages/Staff.jsx";
 import { Account } from "./pages/Account.jsx";
 import { Plans } from "./pages/Plans.jsx";
 import { PlansAndPayment } from "./pages/portal/PlansAndPayment.jsx";
-import { Subscriptions, Quotations, Invoices, Payments, Discounts, MySubscriptions, MyInvoices } from "./pages/OperationalPages.jsx";
+import {
+  Subscriptions,
+  Quotations,
+  Invoices,
+  Payments,
+  Discounts,
+  MySubscriptions,
+  MyInvoices,
+} from "./pages/OperationalPages.jsx";
 import { NotFound } from "./pages/Placeholder.jsx";
 
-// ------------------------------------------------------------------
-// Path → page. Teammates: when your page is ready, import it above
-// and replace its <Placeholder /> here. Permissions come from menu.js.
-// ------------------------------------------------------------------
 const PAGES = {
   "/dashboard": <Dashboard />,
   "/subscriptions": <Subscriptions />,
@@ -57,11 +62,18 @@ export function App() {
           <Route
             key={item.path}
             path={item.path}
-            element={<RequireRole roles={item.roles}>{PAGES[item.path] ?? <NotFound />}</RequireRole>}
+            element={
+              <RequireRole roles={item.roles}>
+                {PAGES[item.path] ?? <NotFound />}
+              </RequireRole>
+            }
           />
         ))}
-        {/* Old address for the customer profile, now part of My account */}
-        <Route path="/portal/profile" element={<Navigate to="/account" replace />} />
+
+        <Route
+          path="/portal/profile"
+          element={<Navigate to="/account" replace />}
+        />
         <Route path="/" element={<HomeRedirect />} />
         <Route path="*" element={<NotFound />} />
       </Route>
@@ -71,6 +83,8 @@ export function App() {
 
 function HomeRedirect() {
   const { role, ready } = useAuth();
+
   if (!ready) return <StateMessage kind="loading" />;
+
   return <Navigate to={homePathFor(role)} replace />;
 }

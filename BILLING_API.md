@@ -163,7 +163,10 @@ A logged-in **customer** sees only their own invoices. The username comes from t
 | Method | Route | Notes |
 |---|---|---|
 | GET | `/api/me/invoices?page=&page_size=` | Same shape as `/api/invoices`; confirmed, paid and cancelled only (no drafts) |
+<<<<<<< HEAD
 | GET | `/api/me/subscriptions` | Only the authenticated customer's own subscriptions |
+=======
+>>>>>>> 8d9173b2e564fcd208e541743dbe853f25a62fe6
 | GET | `/api/me/invoices/{id}` | Same shape as `/api/invoices/{id}`; 404 if it isn't theirs |
 
 Admin and staff get `403` here (they use `/api/invoices`). Invoices are matched to customers by `customer_username`, copied from the subscription when billing runs. Subscriptions must be created with `customer_username` set to the customer's login username.

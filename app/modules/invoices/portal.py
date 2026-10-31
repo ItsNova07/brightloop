@@ -1,4 +1,4 @@
-"""Customer portal: a logged-in customer sees only their own invoices.
+﻿"""Customer portal: a logged-in customer sees only their own invoices.
 
 The username comes from the verified login token (Member 2's current_customer_username),
 never from the browser, so one customer can't ask for another customer's invoices.
@@ -77,3 +77,4 @@ def my_subscriptions(
         .order_by(catalog_models.Subscription.id.desc())
         .all()
     )
+

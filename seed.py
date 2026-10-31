@@ -1,6 +1,10 @@
 """Fill the database with realistic demo data in one go.
 
+<<<<<<< HEAD
 Run from the repo root (where requirements.txt is):
+=======
+Run from the backend folder:
+>>>>>>> 8d9173b2e564fcd208e541743dbe853f25a62fe6
     python seed.py            demo data (about 12 customers)
     python seed.py --big 5000 demo data plus 5,000 extra subscriptions (speed test)
     python seed.py --reset    wipe everything first, then add demo data
@@ -14,11 +18,15 @@ from decimal import Decimal
 from app.main import app  # noqa: F401  creates all tables and switches on foreign keys
 from app import models as m
 from app import services
+<<<<<<< HEAD
 from app.core.database import SessionLocal as AuthSession
 from app.core.security import hash_password
 from app.db import Base, SessionLocal, engine
 from app.modules.customers.models import Customer
 from app.modules.users.models import User
+=======
+from app.db import Base, SessionLocal, engine
+>>>>>>> 8d9173b2e564fcd208e541743dbe853f25a62fe6
 from app.modules.discounts.models import Discount
 from app.modules.invoices import service as invoice_service
 from app.modules.invoices.billing import run_billing
@@ -180,6 +188,7 @@ def add_quotation_templates(db, c):
     ))
 
 
+<<<<<<< HEAD
 # Demo logins (local demo data only, not real accounts)
 DEMO_STAFF = ("ravi", "Ravi Menon", "ravi@brightloop.in", "Staff@12345")
 DEMO_CUSTOMER_PASSWORD = "Cust@12345"  # for Sharma Traders: accounts@sharmatraders.in
@@ -211,6 +220,8 @@ def add_people():
         db.commit()
 
 
+=======
+>>>>>>> 8d9173b2e564fcd208e541743dbe853f25a62fe6
 def confirm_and_collect(db):
     """Confirm the invoices, then pay some fully, some partly, and leave some overdue."""
     invoices = db.query(Invoice).filter(Invoice.status == "draft").order_by(Invoice.id).all()
@@ -272,15 +283,21 @@ def main():
         print(f"Billing run: {result.created} invoices created")
         confirm_and_collect(db)
 
+<<<<<<< HEAD
         add_people()
+=======
+>>>>>>> 8d9173b2e564fcd208e541743dbe853f25a62fe6
         summary = invoice_service.summary(db, None, None)
         print("Done. Dashboard numbers:")
         print(f"  Revenue collected: {summary.revenue}")
         print(f"  Outstanding:       {summary.outstanding}")
         print(f"  Overdue invoices:  {summary.overdue_count} ({summary.overdue_amount})")
+<<<<<<< HEAD
         print("Demo logins (besides your admin):")
         print(f"  Staff:    {DEMO_STAFF[2]} / {DEMO_STAFF[3]}")
         print(f"  Customer: {CUSTOMERS[0][1]} / {DEMO_CUSTOMER_PASSWORD}  (Sharma Traders)")
+=======
+>>>>>>> 8d9173b2e564fcd208e541743dbe853f25a62fe6
     finally:
         db.close()
 

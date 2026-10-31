@@ -1,4 +1,4 @@
-"""The one Brightloop backend: login (Member 2), catalog (Member 3) and billing (Member 4).
+﻿"""The one Brightloop backend: login (Member 2), catalog (Member 3) and billing (Member 4).
 
 Two SQLite files, as Member 2 designed:
   member2.db    logins, customers, reset tokens, audit log   (app.core.database)
@@ -93,3 +93,4 @@ def health_check():
 @app.get("/api/health", tags=["health"])
 def health():
     return {"status": "ok"}
+

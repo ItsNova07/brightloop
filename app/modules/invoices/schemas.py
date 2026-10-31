@@ -1,4 +1,4 @@
-from datetime import date, datetime
+﻿from datetime import date, datetime
 
 from pydantic import BaseModel
 
@@ -101,3 +101,4 @@ class InvoiceSummary(BaseModel):
     overdue_invoices: list[OverdueInvoice]
     months: list[MonthTrend]  # last 6 months up to to_date, oldest first
     collection: Collection
+

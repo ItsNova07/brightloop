@@ -1,0 +1,504 @@
+/* ------------------------------------------------------------------
+   Charts. Colours checked with the dataviz palette validator: the three
+   status fills stay distinguishable for colour-blind viewers, and every
+   block carries a name in its legend, tooltip and accessible label, so
+   identity never rests on colour alone.
+------------------------------------------------------------------- */
+:root {
+  --chart-paid: #2f7d4f;
+  --chart-owed: #d9a441;
+  --chart-late: #b03a2e;
+  --chart-series: var(--teal);
+  --chart-grid: #e8ebe7;
+  --chart-muted: #c2c9c1;
+  /* Gains and losses (passed the validator as a pair) */
+  --chart-gain: #00897b;
+  --chart-loss: #c4622d;
+  /* One-hue ramp for "how much", light to dark */
+  --heat-0: #f1f3f0;
+  --heat-1: #d6ece9;
+  --heat-2: #9fd2cb;
+  --heat-3: #4fab9f;
+  --heat-4: #0b6e66;
+}
+
+/* ---------- Column chart ---------- */
+.column-chart {
+  position: relative;
+  width: 100%;
+}
+.column-chart svg {
+  display: block;
+  overflow: visible;
+}
+.chart-grid {
+  stroke: var(--chart-grid);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.chart-axis {
+  fill: var(--ink-faint);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.chart-value {
+  fill: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  animation: fade-in 300ms var(--ease-out) calc(500ms + var(--i) * 70ms) both;
+}
+.chart-bar {
+  fill: var(--chart-series);
+  transform-box: fill-box;
+  transform-origin: bottom;
+  transition: fill var(--fast) var(--ease);
+  animation: bar-grow 700ms var(--ease-out) calc(var(--i) * 70ms) both;
+}
+.chart-column-active .chart-bar {
+  fill: var(--teal-dark);
+}
+.chart-column-active .chart-axis {
+  fill: var(--ink);
+  font-weight: 700;
+}
+.chart-hit {
+  fill: transparent;
+  cursor: pointer;
+}
+.chart-hit:focus {
+  outline: none;
+}
+.chart-hit:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: -2px;
+}
+@keyframes bar-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+/* ---------- Tooltip (shared) ---------- */
+.chart-tooltip {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: #fff;
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  box-shadow: var(--shadow-pop);
+  animation: tooltip-in 120ms var(--ease-out) both;
+}
+.chart-tooltip strong {
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.chart-tooltip span {
+  color: #b7c0cd;
+}
+.chart-tooltip-above {
+  top: -10px;
+}
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------- Sparkline ---------- */
+.sparkline {
+  display: block;
+  overflow: visible;
+}
+.sparkline-history {
+  fill: none;
+  stroke: var(--chart-muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  animation: line-draw 900ms var(--ease-out) 200ms both;
+}
+.sparkline-now {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  animation: fade-in 300ms var(--ease-out) 900ms both;
+}
+.sparkline-dot {
+  stroke: var(--paper);
+  stroke-width: 2;
+  animation: dot-pop 320ms var(--ease-out) 1000ms both;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.sparkline-teal .sparkline-now {
+  stroke: var(--chart-series);
+}
+.sparkline-teal .sparkline-dot {
+  fill: var(--chart-series);
+}
+.sparkline-owed .sparkline-now {
+  stroke: var(--owed);
+}
+.sparkline-owed .sparkline-dot {
+  fill: var(--owed);
+}
+.sparkline-late .sparkline-now {
+  stroke: var(--late);
+}
+.sparkline-late .sparkline-dot {
+  fill: var(--late);
+}
+@keyframes line-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes dot-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+/* ---------- Segmented bar ---------- */
+.segmented-bar {
+  position: relative;
+  height: 28px;
+}
+.segment {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transform-origin: left;
+  transition: filter var(--fast) var(--ease);
+  animation: segment-grow 700ms var(--ease-out) calc(200ms + var(--i) * 120ms) both;
+}
+.segment-active {
+  filter: brightness(1.12);
+}
+.segment:focus {
+  outline: none;
+}
+.segment:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.segment-paid {
+  background: var(--chart-paid);
+}
+.segment-owed {
+  background: var(--chart-owed);
+  color: var(--ink);
+}
+.segment-late {
+  background: var(--chart-late);
+}
+.segment-teal {
+  background: var(--chart-series);
+}
+@keyframes segment-grow {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+}
+.segmented-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin: var(--s3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-xs);
+  color: var(--ink-soft);
+}
+.segmented-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend-swatch {
+  position: static;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border-radius: 3px;
+  animation: none;
+}
+
+/* ---------- Diverging bars (gains / losses) ---------- */
+.diverging {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.diverging-row {
+  display: grid;
+  grid-template-columns: minmax(96px, 128px) minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: center;
+  padding: var(--s2) 0;
+  animation: rise-small 360ms var(--ease-out) calc(var(--i) * 70ms) both;
+}
+.diverging-label {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.diverging-name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.diverging-detail {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+.diverging-track {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: center;
+  height: 28px;
+}
+.diverging-zero {
+  align-self: stretch;
+  background: var(--line-strong);
+}
+.diverging-half {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.diverging-half-loss {
+  justify-content: flex-end;
+}
+.diverging-bar {
+  height: 20px;
+  animation: bar-out 600ms var(--ease-out) calc(150ms + var(--i) * 90ms) both;
+}
+.diverging-bar-gain {
+  border-radius: 0 4px 4px 0;
+  background: var(--chart-gain);
+  transform-origin: left;
+}
+.diverging-bar-loss {
+  border-radius: 4px 0 0 4px;
+  background: var(--chart-loss);
+  transform-origin: right;
+}
+.diverging-value {
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  animation: fade-in 300ms var(--ease-out) calc(600ms + var(--i) * 90ms) both;
+}
+@keyframes bar-out {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* ---------- Bar list (plan mix) ---------- */
+.barlist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.barlist-row {
+  animation: rise-small 360ms var(--ease-out) calc(var(--i) * 80ms) both;
+}
+.barlist-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s3);
+  font-size: var(--text-sm);
+}
+.barlist-name {
+  font-weight: 700;
+}
+.barlist-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.barlist-share {
+  margin-left: 4px;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+.barlist-track {
+  height: 10px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: var(--heat-0);
+  overflow: hidden;
+}
+.barlist-bar {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--chart-gain);
+  transform-origin: left;
+  animation: bar-out 700ms var(--ease-out) calc(200ms + var(--i) * 110ms) both;
+}
+.barlist-detail {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+/* ---------- Calendar heatmap ---------- */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.calendar-weekday {
+  padding-bottom: 2px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+.calendar-day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 1.15;
+  min-height: 40px;
+  padding: 5px 6px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+  animation: tile-in 320ms var(--ease-out) calc(var(--i) * 14ms) both;
+}
+.calendar-day:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-panel);
+}
+.calendar-day:active {
+  transform: scale(0.96);
+}
+.calendar-day-selected {
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
+}
+.calendar-day-selected:hover {
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
+}
+.calendar-day-today .calendar-date::after {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-left: 4px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: currentColor;
+}
+.calendar-date {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.calendar-month {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0.75;
+}
+.calendar-count {
+  align-self: flex-end;
+  font-size: 11px;
+  font-weight: 800;
+}
+.calendar-level-0 {
+  background: var(--heat-0);
+  color: var(--ink-faint);
+}
+.calendar-level-1 {
+  background: var(--heat-1);
+}
+.calendar-level-2 {
+  background: var(--heat-2);
+}
+.calendar-level-3 {
+  background: var(--heat-3);
+  color: #fff;
+}
+.calendar-level-4 {
+  background: var(--heat-4);
+  color: #fff;
+}
+.calendar-scale {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: var(--s3);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.calendar-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+@keyframes tile-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 560px) {
+  .diverging-row {
+    grid-template-columns: 1fr;
+    gap: var(--s1);
+  }
+  .diverging-label {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--s2);
+  }
+  .calendar-month {
+    display: none;
+  }
+  .calendar-day {
+    min-height: 36px;
+    padding: 4px 5px;
+  }
+}

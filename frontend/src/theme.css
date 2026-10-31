@@ -1,0 +1,147 @@
+/* ------------------------------------------------------------------
+   Brightloop design tokens.
+   Every colour, size and radius in the app comes from here.
+   If you need a new colour, add a token — never hardcode a hex in a page.
+------------------------------------------------------------------- */
+:root {
+  /* Base palette */
+  --ink: #1c2433;
+  --ink-soft: #4a5468;
+  --ink-faint: #7a8496;
+  --mist: #f2f4f1;
+  --paper: #ffffff;
+  --line: #dde2dc;
+  --line-strong: #c6cdc5;
+
+  /* Brand */
+  --teal: #0e7c7b;
+  --teal-dark: #0a5f5e;
+  --teal-tint: #e1f0ef;
+
+  /* Money status */
+  --paid: #2f7d4f;
+  --paid-tint: #e3f1e8;
+  --owed: #9a6418;
+  --owed-tint: #f7ecd9;
+  --late: #c2412d;
+  --late-tint: #f9e4e0;
+  --neutral-tint: #eceeeb;
+
+  /* Glow accents (login brand panel only) */
+  --glow: #4fd8c9;
+  --steel: #c9d6d8;
+  --owed-glow: #f2b544;
+  --night: #0f1724;
+
+  /* Sidebar */
+  --side-bg: #1c2433;
+  --side-text: #c9d0dc;
+  --side-active: #ffffff;
+
+  /* Type */
+  --font: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.625rem;
+  --text-2xl: 2.125rem;
+
+  /* Spacing (4px grid) */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+
+  /* Shape */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-panel: 0 1px 2px rgba(28, 36, 51, 0.06), 0 4px 16px rgba(28, 36, 51, 0.05);
+  --shadow-pop: 0 12px 40px rgba(28, 36, 51, 0.18);
+
+  /* Motion */
+  --fast: 120ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --sidebar-width: 232px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--mist);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--text-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--teal-dark);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+.money,
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}
